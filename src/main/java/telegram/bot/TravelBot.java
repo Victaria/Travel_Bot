@@ -1,8 +1,10 @@
 package telegram.bot;
 
 import org.hibernate.*;
+import org.hibernate.loader.custom.sql.SQLQueryParser;
 import org.hibernate.mapping.Map;
 import org.hibernate.query.Query;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -14,8 +16,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Component
+@PropertySource("file:telegram.properties")
 public class TravelBot extends TelegramLongPollingBot{
-  //  private CityService service;
+
 
     public void onUpdateReceived(Update update) {
         String message = update.getMessage().getText();
@@ -24,6 +27,8 @@ public class TravelBot extends TelegramLongPollingBot{
                     + '\n' + "Please, enter name of city, that are you interesting for.");
         } else if (message.equals("/showAll")){
             sendMsg(update.getMessage().getChatId().toString(), getCities());
+        } else {
+            sendMsg(update.getMessage().getChatId().toString(), getCityByName(update.getMessage().getText()));
         }
     }
 
@@ -63,6 +68,28 @@ public class TravelBot extends TelegramLongPollingBot{
             city.setDescription(row[2].toString());
             allCities += city.getName() + "  "+ city.getDescription() + '\n';
         }
+        session.close();
         return allCities;
+    }
+
+    public static String getCityByName(String name){
+        SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+
+        Transaction tx = session.beginTransaction();
+        SQLQuery query = session.createSQLQuery("select * from telegram_bot");
+        List<Object[]> rows = query.list();
+        for(Object[] row : rows){
+            City city = new City();
+            city.setId(Long.parseLong(row[0].toString()));
+            city.setName(row[1].toString());
+            city.setDescription(row[2].toString());
+            if(city.getName().equals(name)) {
+                session.close();
+                return city.getDescription();
+            }
+        }
+        session.close();
+        return "Город не найден.";
     }
 }
