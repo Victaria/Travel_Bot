@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="unnamed">
+    <output-path>$PROJECT_DIR$/out/artifacts/unnamed</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Travel_Bot" />
+          <element id="jpa-descriptors" facet="Travel_Bot/jpa/JPA" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

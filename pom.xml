@@ -15,6 +15,12 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                    <programs>
+                        <program>
+                            <mainClass>telegram.bot.MainClass</mainClass>
+                            <name>workerBot</name>
+                        </program>
+                    </programs>
                 </configuration>
             </plugin>
         </plugins>
@@ -102,6 +108,4 @@
             <version>5.4.10.Final</version>
         </dependency>
     </dependencies>
-
-
 </project>

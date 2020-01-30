@@ -1,18 +1,13 @@
 package telegram.bot;
 
 import org.hibernate.*;
-import org.hibernate.loader.custom.sql.SQLQueryParser;
-import org.hibernate.mapping.Map;
-import org.hibernate.query.Query;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Component
@@ -23,8 +18,10 @@ public class TravelBot extends TelegramLongPollingBot{
     public void onUpdateReceived(Update update) {
         String message = update.getMessage().getText();
         if (message.equals("/start")) {
-            sendMsg(update.getMessage().getChatId().toString(), "Hello! Привет! This is travel bot!" + '\n' + "I'm here to help you with learning information about world cities!"
-                    + '\n' + "Please, enter name of city, that are you interesting for.");
+            sendMsg(update.getMessage().getChatId().toString(), "Привет! Я твой помощник в путешествиях!" + '\n'
+                    + "Я здесь, чтобы помочь тебе узнать больше информации о городах мира!"
+                    + '\n' + "Пожалуйста, введи имя города, который тебя интересует и убедить в правильности написания!"
+                    + '\n' + "Например:  Минск");
         } else if (message.equals("/showAll")){
             sendMsg(update.getMessage().getChatId().toString(), getCities());
         } else {
